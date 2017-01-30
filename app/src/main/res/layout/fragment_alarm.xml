@@ -77,69 +77,44 @@
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
+            <EditText
+                android:id="@+id/alFr_et_massage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/alFr_dateTimeCard"
+                android:layout_alignRight="@+id/alFr_dateTimeCard"
+                android:layout_alignEnd="@+id/alFr_dateTimeCard"
+                android:layout_alignLeft="@+id/alFr_dateTimeCard"
+                android:layout_alignStart="@+id/alFr_dateTimeCard"
+                android:layout_centerHorizontal="true"
+                android:scrollHorizontally="false"
+                android:textSize="20sp"/>
+
             <CheckBox
                 android:id="@+id/alFr_check_repeat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/alFr_dateTimeCard"
                 android:layout_alignStart="@+id/alFr_dateTimeCard"
-                android:layout_below="@+id/alFr_dateTimeCard"
+                android:layout_below="@+id/alFr_et_massage"
                 android:text="@string/repeat"
                 android:textSize="18sp"/>
 
-            <LinearLayout
-                android:id="@+id/alFr_layout_repeatDays"
+            <ViewStub
+                android:id="@+id/alFr_weekdays_stub"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/alFr_check_repeat"
+                android:layout_height="?actionBarSize"
+                android:layout_below="@id/alFr_check_repeat"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"/>
 
-                <Button
-                    android:id="@+id/alFr_btn_sunday"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/sunday_48"/>
-
-                <Button
-                    android:id="@+id/alFr_btn_monday"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/monday_48"/>
-
-                <Button
-                    android:id="@+id/alFr_btn_tuesday"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/tuesday_48"/>
-
-                <Button
-                    android:id="@+id/alFr_btn_wednesday"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/wednesday_48"/>
-
-                <Button
-                    android:id="@+id/alFr_btn_thursday"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/thursday_48"/>
-
-                <Button
-                    android:id="@+id/alFr_btn_friday"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/friday_48"/>
-
-                <Button
-                    android:id="@+id/alFr_btn_saturday"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/saturday_48"/>
-            </LinearLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/alFr_weekdays_stub"
+                android:layout_alignLeft="@+id/alFr_dateTimeCard"
+                android:layout_alignStart="@+id/alFr_dateTimeCard"/>
 
         </RelativeLayout>
     </ScrollView>
@@ -147,19 +122,32 @@
     <Button
         android:id="@+id/alFr_btn_set"
         style="@style/MainButton"
-        android:text="@string/plus"/>
+        android:background="@drawable/ic_checkbox_marked_grey600_48dp"/>
 
     <Button
-        android:id="@+id/alFr_btn_delete"
-        android:layout_width="50dp"
-        android:layout_height="35dp"
+        android:id="@+id/alFr_btn_cancel"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignBaseline="@+id/alFr_btn_set"
         android:layout_alignBottom="@+id/alFr_btn_set"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="15dp"
         android:layout_marginStart="15dp"
-        android:text="@string/del"
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        android:background="@drawable/ic_keyboard_backspace_grey600_48dp"/>
+
+    <Button
+        android:id="@+id/alFr_btn_delete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignBaseline="@+id/alFr_btn_set"
+        android:layout_alignBottom="@+id/alFr_btn_set"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:textSize="15sp"
+        android:background="@drawable/ic_delete_grey600_48dp"/>
 
 </RelativeLayout>

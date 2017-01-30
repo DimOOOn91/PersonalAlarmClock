@@ -2,17 +2,19 @@ package com.example.dima.personalalarmclock.dao;
 
 
 import com.example.dima.personalalarmclock.entity.Alarm;
+import com.example.dima.personalalarmclock.util.AlarmCounter;
 
 import java.util.ArrayList;
 
 public class AlarmDaoImpl implements AlarmDao {
 
     private static AlarmDaoImpl instance;
-
     private static ArrayList<Alarm> mAlarmList;
+    private AlarmCounter alarmCounter;
 
     private AlarmDaoImpl() {
         mAlarmList = new ArrayList<>();
+        alarmCounter = AlarmCounter.getInstance();
     }
 
     public static AlarmDaoImpl getInstance() {
@@ -20,6 +22,12 @@ public class AlarmDaoImpl implements AlarmDao {
             instance = new AlarmDaoImpl();
         }
         return instance;
+    }
+
+    @Override
+    public Alarm createAlarm() {
+        Alarm alarm = new Alarm(alarmCounter.getId());
+        return saveAlarm(alarm);
     }
 
     @Override
@@ -43,7 +51,9 @@ public class AlarmDaoImpl implements AlarmDao {
         if (alarmInDb == null) {
             return false;
         } else {
-            return mAlarmList.remove(alarmInDb);
+            mAlarmList.remove(alarmInDb);
+            alarmCounter.deleteId(id);
+            return true;
         }
     }
 

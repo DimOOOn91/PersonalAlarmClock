@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">PersonalAlarmClock</string>
-    <string name="today">Today</string>
+    <string name="today">Date</string>
     <string name="_00_00">00:00</string>
     <string name="time">Time:</string>
     <string name="date">Date:</string>
     <string name="_00_00_0000">00/00/0000</string>
     <string name="repeat">Repeat</string>
-    <string name="plus">+</string>
-    <string name="del">Del</string>
 </resources>

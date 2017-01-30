@@ -2,34 +2,37 @@ package com.example.dima.personalalarmclock.entity;
 
 import android.text.TextUtils;
 
+import java.util.Calendar;
+
 public enum WeekDay {
-    SUNDAY("SU"),
-    MONDAY("MO"),
-    TUESDAY("TU"),
-    WEDNESDAY("WE"),
-    THURSDAY("TH"),
-    FRIDAY("FR"),
-    SATURDAY("SA");
+    SU(Calendar.SUNDAY),
+    MO(Calendar.MONDAY),
+    TU(Calendar.TUESDAY),
+    WE(Calendar.WEDNESDAY),
+    TH(Calendar.THURSDAY),
+    FR(Calendar.FRIDAY),
+    SA(Calendar.SATURDAY);
 
-    private String value;
+    private int value;
 
-    WeekDay(String value) {
+    WeekDay(int value) {
         this.value = value;
     }
 
-    public String getValue() {
+    public int getValue() {
         return value;
     }
 
-    public WeekDay fromValue(String value) {
-        if (!TextUtils.isEmpty(value)) {
+    public static WeekDay fromValue(String name) {
+        if (TextUtils.isEmpty(name)) {
             return null;
         }
         for (WeekDay weekDay : WeekDay.values()) {
-            if (value.equals(weekDay.value)) {
+            if (name.equals(weekDay.name())) {
                 return weekDay;
             }
         }
         return null;
     }
+
 }

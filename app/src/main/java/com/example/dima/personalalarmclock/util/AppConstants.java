@@ -1,14 +1,16 @@
 package com.example.dima.personalalarmclock.util;
 
+import java.util.Locale;
+
 public class AppConstants {
 
     /**
-     * AlarmCounter constants
+     * AlarmCounter constants to send entity from AlarmListFragment to AlarmFragment
      */
     public static final String ALARM_OBJ_KEY = "com.example.module06main.alarm";
 
     /**
-     * Date format
+     * Currently used Locale
      */
-    public static final String DATE_FORMAT = "dd-MM-yyyy";
+    public static final Locale LOCALE = Locale.ENGLISH;
 }

@@ -17,7 +17,7 @@ public class AlarmCounter {
         }
         return instance;
     }
-    public static int getId() {
+    public int getId() {
         for (int i = 0; i < journal.size(); i++) {
             if (journal.get(i) == Boolean.FALSE) {
                 journal.put(i, Boolean.TRUE);
@@ -29,7 +29,7 @@ public class AlarmCounter {
         return id;
     }
 
-    public static void deleteId(int id) {
+    public void deleteId(int id) {
         journal.put(id, Boolean.FALSE);
     }
 

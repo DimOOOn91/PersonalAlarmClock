@@ -3,38 +3,35 @@ package com.example.dima.personalalarmclock.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.dima.personalalarmclock.util.AlarmCounter;
+import com.example.dima.personalalarmclock.util.AppConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class Alarm implements Parcelable {
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", AppConstants.LOCALE);
 
     private int id;
     private int hours;
     private int minutes;
     private String message;
     private boolean isEnabled;
-    private boolean isRepeated;
     private Calendar mDate;
     private ArrayList<String> repeatingDays;
 
-    public Alarm() {
-        this.id = AlarmCounter.getId();
+    public Alarm(int id) {
+        this.id = id;
         this.mDate = Calendar.getInstance();
         mDate.add(Calendar.MINUTE, 1);
         this.hours = mDate.get(Calendar.HOUR_OF_DAY);
         this.minutes = mDate.get(Calendar.MINUTE);
         this.message = "";
         this.isEnabled = true;
-        this.isRepeated = false;
-        this.repeatingDays = null;
+        this.repeatingDays = new ArrayList<>();
     }
 
     private Alarm(Parcel parcelAlarm) {
@@ -43,14 +40,8 @@ public class Alarm implements Parcelable {
         this.minutes = parcelAlarm.readInt();
         this.message = parcelAlarm.readString();
         this.isEnabled = parcelAlarm.readByte() == 1;
-        this.isRepeated = parcelAlarm.readByte() == 1;
-        if (isRepeated) {
-            parcelAlarm.readStringList(this.repeatingDays);
-            this.mDate = null;
-        } else {
-            this.repeatingDays = null;
-            this.mDate = parseStringToCalendar(parcelAlarm.readString());
-        }
+        this.mDate = parseStringToCalendar(parcelAlarm.readString());
+        parcelAlarm.readStringList(this.repeatingDays);
     }
 
     private Calendar parseStringToCalendar(String stringDate) {
@@ -62,8 +53,7 @@ public class Alarm implements Parcelable {
         }
         Calendar result = Calendar.getInstance();
         result.setTime(date);
-
-        return null;
+        return result;
     }
 
     public int getId() {
@@ -106,10 +96,6 @@ public class Alarm implements Parcelable {
         isEnabled = enabled;
     }
 
-    public boolean isRepeated() {
-        return isRepeated;
-    }
-
     public Calendar getDate() {
         return mDate;
     }
@@ -118,12 +104,20 @@ public class Alarm implements Parcelable {
         mDate = date;
     }
 
-    public void setRepeated(boolean repeated) {
-        isRepeated = repeated;
-        if (repeated) {
-            mDate = null;
+    public ArrayList<String> getRepeatingDays() {
+        return repeatingDays;
+    }
+
+    public boolean addOrRemoveDayForRepeat(String nameOfDay) {
+        if (repeatingDays.contains(nameOfDay)) {
+            repeatingDays.remove(nameOfDay);
+            return false;
+        } else {
+            repeatingDays.add(nameOfDay);
+            return true;
         }
     }
+
 
     @Override
     public int describeContents() {
@@ -137,21 +131,9 @@ public class Alarm implements Parcelable {
         parcel.writeInt(minutes);
         parcel.writeString(message);
         parcel.writeByte((byte) (isEnabled ? 1 : 0));
-        parcel.writeByte((byte) (isRepeated ? 1 : 0));
-        if (isRepeated) {
-            parcel.writeStringList(repeatingDays);
-        } else {
-            String dateInString = dateFormat.format(mDate.getTime());
-            parcel.writeString(dateInString);
-        }
-    }
-
-    public ArrayList<String> getRepeatingDays() {
-        return repeatingDays;
-    }
-
-    public void setRepeatingDays(ArrayList<String> repeatingDays) {
-        this.repeatingDays = repeatingDays;
+        parcel.writeStringList(repeatingDays);
+        String dateInString = dateFormat.format(mDate.getTime());
+        parcel.writeString(dateInString);
     }
 
     @Override
@@ -178,7 +160,6 @@ public class Alarm implements Parcelable {
                 ", minutes=" + minutes +
                 ", message='" + message + '\'' +
                 ", isEnabled=" + isEnabled +
-                ", isRepeated=" + isRepeated +
                 ", mDate=" + mDate +
                 ", repeatingDays=" + repeatingDays +
                 '}';

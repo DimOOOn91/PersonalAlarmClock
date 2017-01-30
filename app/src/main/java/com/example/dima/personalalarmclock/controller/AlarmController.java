@@ -17,11 +17,11 @@ public class AlarmController {
         return mAlarmDao.getAll();
     }
 
-    public Alarm setNewAlarm() {
-        return mAlarmDao.saveAlarm(new Alarm());
+    public Alarm createAlarm() {
+        return mAlarmDao.createAlarm();
     }
 
-    public Alarm updateAlarm(Alarm alarm) {
+    public Alarm saveAlarm(Alarm alarm) {
         return mAlarmDao.saveAlarm(alarm);
     }
 
@@ -29,7 +29,12 @@ public class AlarmController {
         return mAlarmDao.deleteAlarmById(alarm.getId());
     }
 
+    public boolean removeAlarmById(int id) {
+        return mAlarmDao.deleteAlarmById(id);
+    }
+
     public Alarm getAlarmById(int id) {
         return mAlarmDao.getById(id);
     }
-}
+
+};

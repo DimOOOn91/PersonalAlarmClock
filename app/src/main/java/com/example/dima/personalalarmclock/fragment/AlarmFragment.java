@@ -1,4 +1,4 @@
-package com.example.dima.personalalarmclock.fragments;
+package com.example.dima.personalalarmclock.fragment;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -66,7 +66,7 @@ public class AlarmFragment extends BaseFragment
         final View view = inflater.inflate(R.layout.fragment_alarm, container, false);
 
         Bundle bundle = this.getArguments();
-        mAlarmClock = bundle.getParcelable(AppConstants.ALARM_OBJ_KEY);
+        mAlarmClock = bundle.getParcelable(AppConstants.ALARM_ENTITY_KEY);
 
         mAlarmController = new AlarmController();
 

@@ -5,11 +5,13 @@ import android.util.SparseBooleanArray;
 public class AlarmCounter {
 
     private static int count = -1;
-    private static SparseBooleanArray journal = new SparseBooleanArray();
+    private static SparseBooleanArray journal;
 
     private static AlarmCounter instance;
 
-    private AlarmCounter() {}
+    private AlarmCounter() {
+        journal = new SparseBooleanArray();
+    }
 
     public static AlarmCounter getInstance() {
         if (instance == null) {

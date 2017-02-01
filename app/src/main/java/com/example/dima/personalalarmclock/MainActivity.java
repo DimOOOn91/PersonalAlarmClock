@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.example.dima.personalalarmclock.fragments.AlarmListFragment;
+import com.example.dima.personalalarmclock.fragment.AlarmListFragment;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {

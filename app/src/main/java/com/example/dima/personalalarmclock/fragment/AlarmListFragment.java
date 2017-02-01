@@ -1,4 +1,4 @@
-package com.example.dima.personalalarmclock.fragments;
+package com.example.dima.personalalarmclock.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -77,7 +77,7 @@ public class AlarmListFragment extends BaseFragment implements View.OnClickListe
     private void startAlarmFragment(Alarm alarm) {
         AlarmFragment fragment = new AlarmFragment();
         Bundle alarmBundle = new Bundle();
-        alarmBundle.putParcelable(AppConstants.ALARM_OBJ_KEY, alarm);
+        alarmBundle.putParcelable(AppConstants.ALARM_ENTITY_KEY, alarm);
         fragment.setArguments(alarmBundle);
         replaceFragment(fragment);
     }

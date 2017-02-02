@@ -3,6 +3,7 @@ package com.example.dima.personalalarmclock.fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -21,6 +22,7 @@ import com.example.dima.personalalarmclock.R;
 import com.example.dima.personalalarmclock.controller.AlarmController;
 import com.example.dima.personalalarmclock.entity.Alarm;
 import com.example.dima.personalalarmclock.entity.WeekDay;
+import com.example.dima.personalalarmclock.helper.AlarmHelper;
 import com.example.dima.personalalarmclock.helper.DateAndTimeHelper;
 import com.example.dima.personalalarmclock.util.AppConstants;
 import com.fastaccess.datetimepicker.DatePickerFragmentDialog;
@@ -49,13 +51,12 @@ public class AlarmFragment extends BaseFragment
     private TextView mTime;
     private TextView mDate;
     private TextView mTextDate;
+    private EditText mMessage;
     private CheckBox mIsRepeated;
     private Button btnSet;
     private Button btnDelete;
     private Button btnCancel;
     private ViewStub mWeekdaysStub;
-
-    private EditText mMessage;
 
     public AlarmFragment() {
     }
@@ -160,11 +161,13 @@ public class AlarmFragment extends BaseFragment
 
     private void deleteAlarm() {
         mAlarmController.removeAlarm(mAlarmClock);
+        AlarmHelper.cancelAlarm(getActivity(), mAlarmClock);
         replaceFragment(new AlarmListFragment());
     }
 
     private void setAlarm() {
         mAlarmController.saveAlarm(mAlarmClock);
+        AlarmHelper.setAlarm(getActivity(), mAlarmClock);
         replaceFragment(new AlarmListFragment());
     }
 
@@ -182,10 +185,17 @@ public class AlarmFragment extends BaseFragment
     }
 
     private void bind() {
+        int hours = mAlarmClock.getHours();
+        int minutes = mAlarmClock.getMinutes();
+
+        // parse hours and minutes to string
+        String hoursStr = parseNumberToString(hours);
+        String minutesStr = parseNumberToString(minutes);
+
         mTime.setText(new StringBuilder()
-                .append(mAlarmClock.getHours())
+                .append(hoursStr)
                 .append(':')
-                .append(mAlarmClock.getMinutes()));
+                .append(minutesStr));
 
         ArrayList<String> weekDays = mAlarmClock.getRepeatingDays();
         if (weekDays.size() > 0) {
@@ -199,6 +209,15 @@ public class AlarmFragment extends BaseFragment
         }
 
         mMessage.setText(mAlarmClock.getMessage());
+    }
+
+    @NonNull
+    private String parseNumberToString(int number) {
+        String result = String.valueOf(number);
+        if (number < 10) {
+            result = "0" + result;
+        }
+        return result;
     }
 
 

@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 public class AlarmHelper {
 
-    public static final String IS_ALARM_ON = "is_alarm_on";
+    public static final String ALARM_ACTION = "alarm_action";
 
     public static void setAlarm(Context context, Alarm alarm) {
 
@@ -23,7 +23,7 @@ public class AlarmHelper {
 
         // create intent for alarm receiver, set extras to inform that it should turn on
         Intent alarmRingtoneIntent = new Intent(context, AlarmReceiver.class);
-        alarmRingtoneIntent.putExtra(IS_ALARM_ON, true);
+        alarmRingtoneIntent.putExtra(ALARM_ACTION, "alarm_on");
         // create pending intent which create or update already existed intent
         PendingIntent alarmRingtonePenIntent = PendingIntent.getBroadcast(context,
                 alarm.getId(), alarmRingtoneIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -41,7 +41,7 @@ public class AlarmHelper {
     public static void cancelAlarm(Context context, Alarm alarm) {
         // create intent for alarm receiver, set extras to inform that it should turn off
         Intent alarmRingtoneIntent = new Intent(context, AlarmReceiver.class);
-        alarmRingtoneIntent.putExtra(IS_ALARM_ON, false);
+        alarmRingtoneIntent.putExtra(ALARM_ACTION, "alarm_off");
         // create pending intent which create or update already existed intent
         PendingIntent alarmRingtonePenIntent = PendingIntent.getBroadcast(context,
                 alarm.getId(), alarmRingtoneIntent, PendingIntent.FLAG_UPDATE_CURRENT);

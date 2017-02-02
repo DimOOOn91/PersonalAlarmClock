@@ -108,6 +108,8 @@ public class AlarmListFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
+
+    // this method start AlarmFragment and sent it an alarm entity
     private void startAlarmFragment(Alarm alarm) {
         AlarmFragment fragment = new AlarmFragment();
         Bundle alarmBundle = new Bundle();

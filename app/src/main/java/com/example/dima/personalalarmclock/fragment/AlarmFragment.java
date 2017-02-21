@@ -3,7 +3,6 @@ package com.example.dima.personalalarmclock.fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -35,10 +34,7 @@ import com.touchboarder.weekdaysbuttons.WeekdaysDrawableProvider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import static com.example.dima.personalalarmclock.helper.DateAndTimeHelper.getDateOnly;
-import static com.example.dima.personalalarmclock.helper.DateAndTimeHelper.getTimeOnly;
-
+import java.util.Date;
 
 public class AlarmFragment extends BaseFragment
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener,
@@ -75,12 +71,10 @@ public class AlarmFragment extends BaseFragment
         mMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -112,7 +106,11 @@ public class AlarmFragment extends BaseFragment
                     @Override
                     public void onWeekdaysItemClicked(int i, WeekdaysDataItem weekdaysDataItem) {
                         String nameOfDay = weekdaysDataItem.getLetters().toUpperCase();
-                        mAlarmClock.addOrRemoveDayForRepeat(nameOfDay);
+                        if (weekdaysDataItem.isSelected()) {
+                            mAlarmClock.addDayForRepeat(nameOfDay);
+                        } else {
+                            mAlarmClock.removeDayForRepeat(nameOfDay);
+                        }
                     }
 
                     @Override
@@ -121,6 +119,7 @@ public class AlarmFragment extends BaseFragment
                     }
                 });
         mWeekdaysDataSource.setVisible(false);
+        mAlarmController.setTheFirstDayOfWeekMonday(true);
 
         bind();
 
@@ -160,12 +159,19 @@ public class AlarmFragment extends BaseFragment
     }
 
     private void deleteAlarm() {
+        // remove alarm from DB
         mAlarmController.removeAlarm(mAlarmClock);
+        // cancel AlarmManager for current alarm
         AlarmHelper.cancelAlarm(getActivity(), mAlarmClock);
         replaceFragment(new AlarmListFragment());
     }
 
     private void setAlarm() {
+        // sort weekdays in alarm
+        ArrayList<String> sortedRepeatingDays = mAlarmClock.getRepeatingDays();
+        mAlarmClock.setRepeatingDays(WeekDay.sortListOfDays(sortedRepeatingDays));
+
+        // set alarm to DB and set AlarmManager
         mAlarmController.saveAlarm(mAlarmClock);
         AlarmHelper.setAlarm(getActivity(), mAlarmClock);
         replaceFragment(new AlarmListFragment());
@@ -189,8 +195,8 @@ public class AlarmFragment extends BaseFragment
         int minutes = mAlarmClock.getMinutes();
 
         // parse hours and minutes to string
-        String hoursStr = parseNumberToString(hours);
-        String minutesStr = parseNumberToString(minutes);
+        String hoursStr = DateAndTimeHelper.parseNumberToString(hours);
+        String minutesStr = DateAndTimeHelper.parseNumberToString(minutes);
 
         mTime.setText(new StringBuilder()
                 .append(hoursStr)
@@ -202,33 +208,33 @@ public class AlarmFragment extends BaseFragment
             mIsRepeated.setChecked(true);
             for (String day : weekDays) {
                 WeekDay weekDay = WeekDay.fromValue(day);
-                mWeekdaysDataSource.setSelectedDays(weekDay.getValue());
+                mWeekdaysDataSource.setSelectedDays(weekDay.getPosition());
             }
         } else {
-            mDate.setText(String.format(AppConstants.LOCALE, "%1$te/%1$tm/%1$tY", mAlarmClock.getDate()));
+            mDate.setText(DateAndTimeHelper.parseDateToString(mAlarmClock.getDate()));
         }
 
         mMessage.setText(mAlarmClock.getMessage());
     }
 
-    @NonNull
-    private String parseNumberToString(int number) {
-        String result = String.valueOf(number);
-        if (number < 10) {
-            result = "0" + result;
-        }
-        return result;
-    }
-
-
     @Override
     public void onDateSet(long date) {
-        mDate.setText(getDateOnly(date));
+        Date dateOnly = new Date(date);
+        Calendar calendarDate = Calendar.getInstance();
+        calendarDate.setTime(dateOnly);
+
+        mDate.setText(DateAndTimeHelper.parseDateToString(calendarDate));
+        mAlarmClock.setDate(calendarDate);
     }
 
     @Override
-    public void onTimeSet(long timeOnly, long dateWithTime) {
-        mTime.setText(getTimeOnly(timeOnly));
+    public void onTimeSet(long time, long dateWithTime) {
+        Date timeOnly = new Date(time);
+        Calendar calendarTime = Calendar.getInstance();
+        calendarTime.setTime(timeOnly);
 
+        mTime.setText(DateAndTimeHelper.parseTimeToString(calendarTime));
+        mAlarmClock.setHours(calendarTime.get(Calendar.HOUR_OF_DAY));
+        mAlarmClock.setMinutes(calendarTime.get(Calendar.MINUTE));
     }
 }

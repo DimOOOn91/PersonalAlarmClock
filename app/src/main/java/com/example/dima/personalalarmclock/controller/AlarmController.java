@@ -29,12 +29,12 @@ public class AlarmController {
         return mAlarmDao.deleteAlarmById(alarm.getId());
     }
 
-    public boolean removeAlarmById(int id) {
-        return mAlarmDao.deleteAlarmById(id);
-    }
-
     public Alarm getAlarmById(int id) {
         return mAlarmDao.getById(id);
+    }
+
+    public void setTheFirstDayOfWeekMonday(boolean firstDayMonday) {
+        mAlarmDao.setTheFirstDayMonday(firstDayMonday);
     }
 
 };

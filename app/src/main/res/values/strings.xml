@@ -6,4 +6,5 @@
     <string name="date">Date:</string>
     <string name="_00_00_0000">00/00/0000</string>
     <string name="repeat">Repeat</string>
+    <string name="no_name">No name</string>
 </resources>

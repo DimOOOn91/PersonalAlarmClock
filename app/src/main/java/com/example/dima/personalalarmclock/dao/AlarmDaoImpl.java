@@ -2,6 +2,7 @@ package com.example.dima.personalalarmclock.dao;
 
 
 import com.example.dima.personalalarmclock.entity.Alarm;
+import com.example.dima.personalalarmclock.entity.WeekDay;
 import com.example.dima.personalalarmclock.util.AlarmCounter;
 
 import java.util.ArrayList;
@@ -70,5 +71,10 @@ public class AlarmDaoImpl implements AlarmDao {
     @Override
     public ArrayList<Alarm> getAll() {
         return mAlarmList;
+    }
+
+    @Override
+    public void setTheFirstDayMonday(boolean firstDayMonday) {
+        WeekDay.setFirstDayMonday(firstDayMonday);
     }
 }

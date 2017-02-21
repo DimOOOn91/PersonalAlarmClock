@@ -1,7 +1,10 @@
 package com.example.dima.personalalarmclock.broadcast;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
 import com.example.dima.personalalarmclock.helper.AlarmHelper;
@@ -21,7 +24,15 @@ public class AlarmReceiver extends WakefulBroadcastReceiver{
                 getIntentStringExtra(intent, AlarmHelper.ALARM_ACTION));
 
         // start alarm ringtone service
-        context.startService(alarmRingtoneIntent);
+//        context.startService(alarmRingtoneIntent);
+        Notification.Builder builder = new Notification.Builder(context);
+        builder.setSound(Uri.parse("android:resource://raw/ic_alarm_music_test"))
+                .setContentText("My alarm test")
+                .setContentTitle("Title")
+                .setVibrate(new long[] {500,500,500,500,500,500,500,500});
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(11, builder.build());
+
     }
 
     private String getIntentStringExtra(Intent intent, String key) {

@@ -51,7 +51,7 @@ public class AlarmListFragment extends BaseFragment implements View.OnClickListe
 
                 // check if pressed the button or the whole item
                 switch (view.getId()) {
-                    case R.id.btn_delete:
+                    case R.id.item_btn_delete:
                         // remove alarm from DB
                         mAlarmController.removeAlarm(alarm);
 

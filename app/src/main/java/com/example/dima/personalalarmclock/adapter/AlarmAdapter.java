@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.dima.personalalarmclock.R;
 import com.example.dima.personalalarmclock.entity.Alarm;
-import com.example.dima.personalalarmclock.util.AppConstants;
+import com.example.dima.personalalarmclock.helper.DateAndTimeHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,8 +51,16 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmHolder>
 
     @Override
     public void onBindViewHolder(final AlarmHolder alarmHolder, int position) {
+        // get alarm on the position
         final Alarm alarm = mAlarmList.get(position);
-        String time = String.format(AppConstants.LOCALE, "%d:%d", alarm.getHours(), alarm.getMinutes());
+        // parse hours and minutes to string time
+        String hours = DateAndTimeHelper.parseNumberToString(alarm.getHours());
+        String minutes = DateAndTimeHelper.parseNumberToString(alarm.getMinutes());
+        String time = hours + ':' + minutes;
+
+        // check if the alarm is repeated or a single
+        // and fill the appropriate textView
+        // by the direct date or week days when the alarm should ring
         ArrayList<String> repeatingDays = alarm.getRepeatingDays();
         boolean isRepeated = repeatingDays.size() > 0;
         String date;
@@ -68,6 +76,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmHolder>
             }
             date = stringBuilder.toString();
         } else {
+            // check if set date is today or tomorrow and set the appropriate text
             Calendar currentDate = Calendar.getInstance();
             Calendar dateOfAlarm = alarm.getDate();
             int daysToAlarm = getEndOfDay(currentDate).get(Calendar.DATE) - getEndOfDay(dateOfAlarm).get(Calendar.DATE);
@@ -76,9 +85,11 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmHolder>
             } else if (daysToAlarm >= 1 && daysToAlarm < 2) {
                 date = "Tomorrow";
             } else {
-                date = String.format(AppConstants.LOCALE, "%1$te/%1$tm/%1$tY", dateOfAlarm);
+                date = DateAndTimeHelper.parseDateToString(dateOfAlarm);
             }
         }
+
+        // fill the views
         alarmHolder.tvTime.setText(time);
         alarmHolder.tvDate.setText(date);
         alarmHolder.swIsOn.setChecked(alarm.isEnabled());
@@ -103,6 +114,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmHolder>
         });
     }
 
+    // Set calendar on the end of the day
     private Calendar getEndOfDay(Calendar calendar) {
         Calendar result = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -145,8 +157,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmHolder>
             tvTime = (TextView) view.findViewById(R.id.item_tv_time);
             tvDate = (TextView) view.findViewById(R.id.item_tv_date);
             tvMessage = (TextView) view.findViewById(R.id.item_tv_message);
-            swIsOn = (Switch) view.findViewById(R.id.switcher_alarm);
-            btnDelete = (Button) view.findViewById(R.id.btn_delete);
+            swIsOn = (Switch) view.findViewById(R.id.item_switcher_alarm);
+            btnDelete = (Button) view.findViewById(R.id.item_btn_delete);
         }
     }
 }

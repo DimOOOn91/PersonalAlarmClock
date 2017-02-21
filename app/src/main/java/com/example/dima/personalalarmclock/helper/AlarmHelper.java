@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import com.example.dima.personalalarmclock.broadcast.AlarmReceiver;
 import com.example.dima.personalalarmclock.entity.Alarm;
+import com.example.dima.personalalarmclock.entity.WeekDay;
 
 import java.util.Calendar;
 
@@ -16,10 +17,7 @@ public class AlarmHelper {
 
     public static void setAlarm(Context context, Alarm alarm) {
 
-        Calendar calendar = alarm.getDate();
-        calendar.set(Calendar.HOUR_OF_DAY, alarm.getHours());
-        calendar.set(Calendar.MINUTE, alarm.getMinutes());
-        calendar.set(Calendar.SECOND, 0);
+        // TODO refactoring setting alarm
 
         // create intent for alarm receiver, set extras to inform that it should turn on
         Intent alarmRingtoneIntent = new Intent(context, AlarmReceiver.class);
@@ -30,12 +28,52 @@ public class AlarmHelper {
 
         // set alarm manager and fill it based on the fact is it repeated
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (alarm.getRepeatingDays().size() > 0) {
-//            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), );
-            // TODO set alarm manager for intervals
-        } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmRingtonePenIntent);
+
+        Calendar currentDay = Calendar.getInstance();
+
+        Calendar dayOfAlarm = alarm.getDate();
+        dayOfAlarm.set(Calendar.HOUR_OF_DAY, alarm.getHours());
+        dayOfAlarm.set(Calendar.MINUTE, alarm.getMinutes());
+        dayOfAlarm.set(Calendar.SECOND, 0);
+
+        if (alarm.getRepeatingDays().size() == 0 && dayOfAlarm.before(currentDay)) {
+            // finish this method without setting the alarm if alarm is not repeating
+            // and should be performed in the past
+            return;
+        } else if (alarm.getRepeatingDays().size() == 0 && dayOfAlarm.after(currentDay)) {
+            // set alarm and finish this method if alarm is not repeating
+            // and will be performed in future
+            alarmManager.set(AlarmManager.RTC_WAKEUP, dayOfAlarm.getTimeInMillis(), alarmRingtonePenIntent);
+            return;
         }
+
+        dayOfAlarm.set(Calendar.YEAR, currentDay.get(Calendar.YEAR));
+        dayOfAlarm.set(Calendar.MONTH, currentDay.get(Calendar.MONTH));
+        dayOfAlarm.set(Calendar.DAY_OF_MONTH, currentDay.get(Calendar.DAY_OF_MONTH));
+
+        // check if alarm should be performed on this week later
+        for (String day : alarm.getRepeatingDays()) {
+            int dayPoint = WeekDay.valueOf(day).getValue();
+            int differenceInDays = dayPoint - currentDay.get(Calendar.DAY_OF_WEEK);
+
+            if (differenceInDays == 0 && dayOfAlarm.after(currentDay)) {
+                // set alarm and finish the method if alarm should be later today
+                alarmManager.set(AlarmManager.RTC_WAKEUP, dayOfAlarm.getTimeInMillis(), alarmRingtonePenIntent);
+                return;
+            } else if (differenceInDays > 0) {
+                // if alarm is on this week later set alarm and finish this method
+                dayOfAlarm.add(Calendar.DAY_OF_YEAR, differenceInDays);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, dayOfAlarm.getTimeInMillis(), alarmRingtonePenIntent);
+                return;
+            }
+        }
+
+        // if method comes to this line the alarm in not on this week
+        // set alarm to the nearest day on the next week
+        int dayPoint = WeekDay.valueOf(alarm.getRepeatingDays().get(0)).getValue();
+        int differenceInDays = dayPoint - currentDay.get(Calendar.DAY_OF_WEEK) + 7;
+        dayOfAlarm.add(Calendar.DAY_OF_YEAR, differenceInDays);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, dayOfAlarm.getTimeInMillis(), alarmRingtonePenIntent);
     }
 
     public static void cancelAlarm(Context context, Alarm alarm) {
@@ -51,11 +89,8 @@ public class AlarmHelper {
         alarmManager.cancel(alarmRingtonePenIntent);
 
         // stop the ringtone
-        stopRingtone(context, alarmRingtoneIntent);
+        context.sendBroadcast(alarmRingtoneIntent);
 
     }
 
-    private static void stopRingtone(Context context, Intent intent) {
-        context.sendBroadcast(intent);
-    }
 }

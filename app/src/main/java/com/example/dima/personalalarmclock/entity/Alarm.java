@@ -40,8 +40,8 @@ public class Alarm implements Parcelable {
         this.minutes = parcelAlarm.readInt();
         this.message = parcelAlarm.readString();
         this.isEnabled = parcelAlarm.readByte() == 1;
-        this.mDate = parseStringToCalendar(parcelAlarm.readString());
         parcelAlarm.readStringList(this.repeatingDays);
+        this.mDate = parseStringToCalendar(parcelAlarm.readString());
     }
 
     private Calendar parseStringToCalendar(String stringDate) {
@@ -108,16 +108,22 @@ public class Alarm implements Parcelable {
         return repeatingDays;
     }
 
-    public boolean addOrRemoveDayForRepeat(String nameOfDay) {
-        if (repeatingDays.contains(nameOfDay)) {
-            repeatingDays.remove(nameOfDay);
-            return false;
-        } else {
+    public void setRepeatingDays(ArrayList<String> repeatingDays) {
+        this.repeatingDays = repeatingDays;
+    }
+
+    public boolean addDayForRepeat(String nameOfDay) {
+        if (!repeatingDays.contains(nameOfDay)) {
             repeatingDays.add(nameOfDay);
             return true;
+        } else {
+            return false;
         }
     }
 
+    public boolean removeDayForRepeat(String nameOfDay) {
+        return repeatingDays.remove(nameOfDay);
+    }
 
     @Override
     public int describeContents() {
@@ -176,5 +182,4 @@ public class Alarm implements Parcelable {
             return new Alarm[size];
         }
     };
-
 }

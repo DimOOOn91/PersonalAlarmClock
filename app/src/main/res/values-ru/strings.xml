@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">PersonalAlarmClock</string>
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
+    <string name="_00_00">00:00</string>
+    <string name="time">Время:</string>
+    <string name="date">Дата:</string>
+    <string name="_00_00_0000">00/00/0000</string>
+    <string name="repeat">Повторить</string>
+    <string name="no_name">Без названия</string>
+
+    <!--weekdays-->
+    <string name="sunday">ВС</string>
+    <string name="monday">ПН</string>
+    <string name="tuesday">ВТ</string>
+    <string name="wednesday">СР</string>
+    <string name="thursday">ЧТ</string>
+    <string name="friday">ПТ</string>
+    <string name="saturday">СБ</string>
+</resources>

@@ -13,7 +13,7 @@ import com.example.dima.personalalarmclock.R;
 import com.example.dima.personalalarmclock.adapter.AlarmAdapter;
 import com.example.dima.personalalarmclock.controller.AlarmController;
 import com.example.dima.personalalarmclock.entity.Alarm;
-import com.example.dima.personalalarmclock.helper.AlarmHelper;
+import com.example.dima.personalalarmclock.util.AlarmHelper;
 import com.example.dima.personalalarmclock.util.AppConstants;
 
 public class AlarmListFragment extends BaseFragment implements View.OnClickListener {

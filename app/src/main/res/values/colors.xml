@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="alarmColorPrimary">#673AB7</color>
+    <color name="alarmColorPrimaryDark">#512DA8</color>
+    <color name="alarmColorPrimaryLight">#d1c4e9</color>
+    <color name="alarmColorAccent">#E040FB</color>
+    <color name="alarmColorPrimaryText">#212121</color>
+    <color name="alarmColorSecondaryText">#757575</color>
+    <color name="alarmColorIcons">#FFFFFF</color>
+    <color name="alarmColorDivider">#BDBDBD</color>
+    <color name="alarmColorBackground">#d1c4e9</color>
 </resources>

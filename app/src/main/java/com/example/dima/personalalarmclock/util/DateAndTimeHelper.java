@@ -1,8 +1,6 @@
-package com.example.dima.personalalarmclock.helper;
+package com.example.dima.personalalarmclock.util;
 
 import android.support.annotation.NonNull;
-
-import com.example.dima.personalalarmclock.util.AppConstants;
 
 import java.util.Calendar;
 

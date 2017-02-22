@@ -1,4 +1,4 @@
-package com.example.dima.personalalarmclock.helper;
+package com.example.dima.personalalarmclock.util;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

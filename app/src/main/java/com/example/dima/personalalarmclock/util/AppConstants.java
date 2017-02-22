@@ -13,5 +13,5 @@ public class AppConstants {
     /**
      * Currently used Locale
      */
-    public static final Locale LOCALE = Locale.ENGLISH;
+    public static final Locale LOCALE = Locale.getDefault();
 }

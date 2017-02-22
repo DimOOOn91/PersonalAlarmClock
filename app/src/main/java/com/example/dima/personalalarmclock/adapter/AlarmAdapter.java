@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.dima.personalalarmclock.R;
 import com.example.dima.personalalarmclock.entity.Alarm;
-import com.example.dima.personalalarmclock.helper.DateAndTimeHelper;
+import com.example.dima.personalalarmclock.util.DateAndTimeHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,10 +25,12 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmHolder>
     private LayoutInflater mInflater;
     private OnAlarmClickListener mClickListener;
     private OnSwitchCheckListener mSwitchCheckListener;
+    private Context mContext;
 
     public AlarmAdapter(Context context, List<Alarm> alarmList) {
         mInflater = LayoutInflater.from(context);
         mAlarmList = alarmList;
+        mContext = context;
     }
 
     public void setClickListener(OnAlarmClickListener clickListener) {
@@ -81,9 +83,9 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmHolder>
             Calendar dateOfAlarm = alarm.getDate();
             int daysToAlarm = getEndOfDay(currentDate).get(Calendar.DATE) - getEndOfDay(dateOfAlarm).get(Calendar.DATE);
             if (daysToAlarm >= 0 && daysToAlarm < 1) {
-                date = "Today";
+                date = mContext.getResources().getString(R.string.today);
             } else if (daysToAlarm >= 1 && daysToAlarm < 2) {
-                date = "Tomorrow";
+                date = mContext.getResources().getString(R.string.tomorrow);
             } else {
                 date = DateAndTimeHelper.parseDateToString(dateOfAlarm);
             }

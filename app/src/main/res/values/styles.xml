@@ -23,13 +23,13 @@
     <style name="AlarmTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/alarmColorPrimary</item>
         <item name="colorPrimaryDark">@color/alarmColorPrimaryDark</item>
-        <item name="colorPrimaryLight">@color/alarmColorPrimaryLight</item>
-        <item name="colorBackground">@color/alarmColorPrimaryLight</item>
+        <!--<item name="android:colorPrimaryLight">@color/alarmColorPrimaryLight</item>-->
+        <item name="android:colorBackground">@color/alarmColorBackground</item>
         <item name="colorAccent">@color/alarmColorAccent</item>
-        <item name="colorPrimaryText">@color/alarmColorPrimaryText</item>
-        <item name="colorSecondaryText">@color/alarmColorSecondaryText</item>
-        <item name="colorIcons">@color/alarmColorIcons</item>
-        <item name="colorDivider">@color/alarmColorDivider</item>
+        <!--<item name="android:colorPrimaryText">@color/alarmColorPrimaryText</item>-->
+        <!--<item name="android:colorSecondaryText">@color/alarmColorSecondaryText</item>-->
+        <!--<item name="android:colorIcons">@color/alarmColorIcons</item>-->
+        <!--<item name="android:colorDivider">@color/alarmColorDivider</item>-->
         <item name="android:windowBackground">@color/alarmColorBackground</item>
     </style>
 
